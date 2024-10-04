@@ -1,17 +1,20 @@
-FROM nginx:latest
+FROM debian:bookworm
 
-# Install prerequisites and nginx extras
+# Install prerequisites
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg2 \
     lsb-release \
-    && echo "deb http://nginx.org/packages/$(lsb_release -cs)/nginx/ $(lsb_release -cs) nginx" > /etc/apt/sources.list.d/nginx.list \
-    && curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add - \
+    apt-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add NGINX signing key and repository
+RUN curl -fsSL https://nginx.org/keys/nginx_signing.key | tee /etc/apt/trusted.gpg.d/nginx.gpg > /dev/null \
+    && echo "deb http://nginx.org/packages/debian/ bookworm nginx" > /etc/apt/sources.list.d/nginx.list \
     && apt-get update \
     && apt-get install -y nginx-extras \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
 
 # Forward request and error logs to Docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
