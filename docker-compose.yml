@@ -50,6 +50,7 @@ services:
       - /etc/letsencrypt/live:/etc/letsencrypt/live # current certificate
       - /etc/letsencrypt/archive:/etc/letsencrypt/archive # all certificates (symlinks from /live points here)
       - /etc/letsencrypt/wk:/etc/letsencrypt/wk # folder where you have to put the brave reward token
+      - ./certs:/etc/nginx/certs   # Mount the SSL certs into the container
     depends_on:
       - hippocooking_wordpress
     command: ["nginx", "-g", "daemon off;"]
