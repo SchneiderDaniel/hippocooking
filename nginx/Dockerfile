@@ -36,5 +36,3 @@ EXPOSE 80
 
 # Copy your custom Nginx configuration file (nginx.conf)
 COPY nginx.conf /etc/nginx
-
-
