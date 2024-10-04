@@ -1,10 +1,8 @@
 FROM nginx
 
 # Install nginx extras and clean up to reduce image size
-RUN apt-get update && \
-    apt-get install -y nginx-extras && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y nginx-extras
+
 
 # Forward request and error logs to Docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
