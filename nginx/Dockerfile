@@ -1,4 +1,4 @@
-FROM nginx
+FROM nginx:latest
 
 # Install nginx extras and clean up to reduce image size
 RUN apt-get update && apt-get install -y nginx-extras
