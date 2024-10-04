@@ -1,5 +1,5 @@
 # Use the official NGINX base image
-FROM nginx:latest
+FROM nginx:1.22.1
 
 # Install the nginx-extras package
 RUN apt-get update && \
