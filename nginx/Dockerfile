@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:bullseye
 
 # Install prerequisites
 RUN apt-get update && apt-get install -y \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 
 # Add NGINX signing key and repository
 RUN curl -fsSL https://nginx.org/keys/nginx_signing.key | tee /usr/share/keyrings/nginx-archive-keyring.gpg > /dev/null \
-    && echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian/ bookworm nginx" > /etc/apt/sources.list.d/nginx.list \
+    && echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian/ bullseye nginx" > /etc/apt/sources.list.d/nginx.list \
     && apt-get update \
     && apt-get install -y nginx-extras \
     && apt-get clean \
