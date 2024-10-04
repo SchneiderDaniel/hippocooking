@@ -1,10 +1,10 @@
-version: "3.7"
+version: "3.9"
 
 services:
 
-  db:
-    image: mysql:5.7
-    container_name: db
+  hippocooking_db:
+    image: mysql:8.0
+    container_name: hippocooking_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
@@ -14,16 +14,16 @@ services:
     volumes:
       - ./db/mysql:/var/lib/mysql
     networks:
-      - u-online
+      - wordpress_network
 
-  wordpress:
+  hippocooking_wordpress:
     image: wordpress:latest
-    container_name: wordpress
+    container_name: hippocooking_wordpress
     restart: always
     expose:
       - 80
     depends_on:
-      - db
+      - hippocooking_db
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
@@ -34,12 +34,12 @@ services:
       - ./wordpress/themes:/var/www/html/wp-content/themes
       - ./wordpress/uploads:/var/www/html/wp-content/uploads
     networks:
-      - u-online
+      - wordpress_network
 
 
-  nginx_web_server:
+  hippocooking_nginx_web_server:
     build: ./nginx
-    container_name: nginx_web_server
+    container_name: hippocooking_nginx_web_server
     restart: always
     ports:
       - "80:80"
@@ -51,13 +51,12 @@ services:
       - /etc/letsencrypt/archive:/etc/letsencrypt/archive # all certificates (symlinks from /live points here)
       - /etc/letsencrypt/wk:/etc/letsencrypt/wk # folder where you have to put the brave reward token
     depends_on:
-      - flask_webapp
-      - wordpress
+      - hippocooking_wordpress
     networks:
-      - u-online
+      - wordpress_network
 
 
 #Docker Networks
 networks:
-  u-online:
+  wordpress_network:
     driver: bridge
