@@ -23,14 +23,15 @@ RUN curl -fsSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /etc/
 # Stage 2: Use slim image for final Nginx
 FROM debian:bullseye-slim
 
-# Install required directories and Nginx
+# Install required directories and Nginx dependencies
 RUN apt-get update && apt-get install -y libpcre3 zlib1g libssl1.1 && \
-    mkdir -p /var/run/nginx /var/cache/nginx
+    mkdir -p /var/run/nginx /var/cache/nginx /etc/nginx/modules-enabled
 
-# Copy Nginx binaries and config from the builder stage
+# Copy Nginx binaries, config, and modules from the builder stage
 COPY --from=builder /usr/sbin/nginx /usr/sbin/nginx
 COPY --from=builder /etc/nginx /etc/nginx
 COPY --from=builder /usr/share/nginx/html /usr/share/nginx/html
 COPY --from=builder /var/log/nginx /var/log/nginx
+COPY --from=builder /usr/lib/nginx/modules /usr/lib/nginx/modules  # Add this line to copy the modules
+COPY --from=builder /etc/nginx/modules-enabled /etc/nginx/modules-enabled  # Add this line to copy the module config files
 
-CMD ["nginx", "-g", "daemon off;"]
