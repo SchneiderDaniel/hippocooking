@@ -8,7 +8,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy custom NGINX configuration (if any)
-# COPY ./my-nginx.conf /etc/nginx/nginx.conf
+# Replace with our own nginx.conf
+COPY nginx.conf /etc/nginx
 
 # Expose HTTP and HTTPS ports
 EXPOSE 80 443
