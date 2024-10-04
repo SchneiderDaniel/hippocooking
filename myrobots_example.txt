@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /security/
+Disallow: /terms/
+Disallow: /privacy/
+Disallow: /legal/
+Disallow: /dash/
