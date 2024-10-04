@@ -1,17 +1,8 @@
 # Use the Nginx image
-FROM nginx
+# Use the official Nginx image from the Docker Hub
+FROM nginx:stable
 
-
-RUN apt-get update && apt-get install -y nginx-extras
-
-
-# forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log
-
-
-# Remove the default nginx.conf
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Replace with our own nginx.conf
+# Copy your custom Nginx configuration file (nginx.conf) into the container
+# You can customize this file according to your needs
 COPY nginx.conf /etc/nginx
+
