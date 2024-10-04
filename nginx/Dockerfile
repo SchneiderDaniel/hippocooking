@@ -31,8 +31,5 @@ COPY --from=builder /etc/nginx /etc/nginx
 COPY --from=builder /usr/share/nginx/html /usr/share/nginx/html
 COPY --from=builder /var/log/nginx /var/log/nginx
 
-# Expose port 80
-EXPOSE 80
-
 # Copy your custom Nginx configuration file (nginx.conf)
 COPY nginx.conf /etc/nginx
