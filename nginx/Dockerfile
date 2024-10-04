@@ -32,6 +32,9 @@ COPY --from=builder /usr/sbin/nginx /usr/sbin/nginx
 COPY --from=builder /etc/nginx /etc/nginx
 COPY --from=builder /usr/share/nginx/html /usr/share/nginx/html
 COPY --from=builder /var/log/nginx /var/log/nginx
-COPY --from=builder /usr/lib/nginx/modules /usr/lib/nginx/modules  # Add this line to copy the modules
+
+# Replace with the correct path you identified (example: /usr/share/nginx/modules)
+COPY --from=builder /usr/share/nginx/modules /usr/share/nginx/modules  # Add this line to copy the modules
 COPY --from=builder /etc/nginx/modules-enabled /etc/nginx/modules-enabled  # Add this line to copy the module config files
 
+CMD ["nginx", "-g", "daemon off;"]
