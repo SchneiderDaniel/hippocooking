@@ -36,6 +36,16 @@ services:
     networks:
       - wordpress_network
 
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./nginx/ssl:/etc/letsencrypt
+      - ./nginx/ssl-dhparams:/etc/ssl/certs
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $!; done'"
+    networks:
+      - webnet
+
 
   hippocooking_nginx_web_server:
     build: ./nginx
@@ -46,11 +56,9 @@ services:
       - "443:443"
     volumes:
       - ./nginx_web_server/nginx_errors:/var/log/nginx
-      - /etc/ssl:/etc/ssl # dhparams file
-      - /etc/letsencrypt/live:/etc/letsencrypt/live # current certificate
-      - /etc/letsencrypt/archive:/etc/letsencrypt/archive # all certificates (symlinks from /live points here)
-      - /etc/letsencrypt/wk:/etc/letsencrypt/wk # folder where you have to put the brave reward token
-      - ./certs:/etc/nginx/certs   # Mount the SSL certs into the container
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/letsencrypt
+      - ./nginx/ssl-dhparams:/etc/ssl/certs
     depends_on:
       - hippocooking_wordpress
     networks:
